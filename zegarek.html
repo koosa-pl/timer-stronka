@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Timer</title>
+    <link rel="icon" type="image/x-icon" href="zegarek.png">
+
+<style>
+    body {
+        background-color: black; 
+        color: whitesmoke; 
+        font-family: Arial; 
+        font-weight: bold;
+    }
+    
+    button.start {
+        font-weight: bold;
+        font-size: 50px;
+        height: 240px;
+        width: 240px;
+        border-radius: 120px;
+        border: none;
+        background-color: whitesmoke;
+        cursor: pointer;
+    }
+
+    button.start:hover{
+        background-color: lightgreen;
+        transition: background-color 0.30s;
+    }
+    
+
+    p.stylowo {
+        font-size: 60px;
+        text-align: center;
+        margin-bottom: 50px;
+    }
+    
+</style>
+</head>
+<body>
+    <audio src="tick.mp3" class="zegarek-dzwiek"></audio>
+    <p class="stylowo js-troll">Timer Online</p>
+    <p class="stylowo"><button class="start js-przycisk" onclick="aktywujWyswietlanie()
+    ">Start</button></p>
+    <p class="stylowo js-liczenie"></p>
+</body>
+
+<script>
+const przyciskElement = document.querySelector('.js-przycisk')
+let cyfryWyswietlane = document.querySelector('.js-liczenie')
+const zegarek = document.querySelector('.zegarek-dzwiek')
+
+let intervalId;
+let aktywnyStart = false
+function aktywujWyswietlanie() {
+    let x = 0
+    if (!aktywnyStart) {
+    intervalId = setInterval(() => {
+        cyfryWyswietlane.innerHTML = `${x}`
+        x = x +1}, 1000)
+        aktywnyStart = true
+        zegarek.loop=true
+        zegarek.play()
+        przyciskElement.innerHTML="Stop"
+        przyciskElement.style.backgroundColor = 'red'
+    }
+    else {
+        aktywnyStart = false
+        clearInterval(intervalId)
+        zegarek.loop=false
+        zegarek.pause()
+        przyciskElement.innerHTML="Start"
+        przyciskElement.style.backgroundColor = 'lightgreen'
+    }
+}
+
+
+document.body.addEventListener('keydown', (event) => {
+    if (event.key === 'Enter'){
+        aktywujWyswietlanie()
+    }
+})
+</script>
+</html>
